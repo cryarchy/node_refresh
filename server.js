@@ -1,3 +1,4 @@
+//2:58
 const path = require("path");
 const errorHandler = require("./middleware/errorHandler");
 const express = require("express");
@@ -26,19 +27,11 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, "/public")));
+app.use("/", express.static(path.join(__dirname, "/public")));
+app.use("/subdir", express.static(path.join(__dirname, "/public")));
 
-app.get(["/", "/index{.html}"], (req, res) => {
-    res.sendFile(path.join(__dirname, "views", "index.html"));
-});
-
-app.get("/new-page.html", (req, res) => {
-    res.sendFile(path.join(__dirname, "views", "new-page.html"));
-});
-
-app.get("/old-page{.html}", (req, res) => {
-    res.redirect(301, "/new-page.html");
-});
+app.use("/subdir", require("./routes/subdir"));
+app.use("/", require("./routes/root"));
 
 const one = (req, res, next) => {
     console.log("One then ...");
