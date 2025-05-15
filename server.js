@@ -33,25 +33,6 @@ app.use("/subdir", express.static(path.join(__dirname, "/public")));
 app.use("/subdir", require("./routes/subdir"));
 app.use("/", require("./routes/root"));
 
-const one = (req, res, next) => {
-    console.log("One then ...");
-    next();
-};
-
-const two = (req, res, next) => {
-    console.log("Two then ...");
-    next();
-};
-
-const three = (req, res, next) => {
-    console.log("Three!");
-    next();
-};
-
-app.get("/chain{.html}", [one, two, three], (req, res) => {
-    res.send("Chaining done.");
-});
-
 app.all("/{*splat}", (req, res) => {
     res.status(404);
     if (req.accepts("html")) {
